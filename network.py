@@ -78,6 +78,8 @@ if use_seed:
 trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transforms.ToTensor())
 testset = datasets.MNIST(root='./data', train=False, download=True, transform=transforms.ToTensor())
 
+test_num = len(testset)
+
 
 ##### Load Datasets #####
 train_loader = data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
