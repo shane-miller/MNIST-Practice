@@ -89,15 +89,17 @@ class Net(nn.Module):
         super(Net, self).__init__()
 
         self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 32, 3, stride=1),
-            nn.MaxPool2d((2, 2), stride=2),
-            nn.ReLU()
+            nn.Conv2d(1, 32, 3, padding=1),
+            nn.MaxPool2d((2, 2), stride=(2, 2)),
+            nn.ReLU(),
+            nn.BatchNorm2d(16)
         )
 
         self.conv2 = nn.Sequential(
-            nn.Conv2d(32, 64, 3, stride=1),
-            nn.MaxPool2d((2, 2), stride=2),
-            nn.ReLU()
+            nn.Conv2d(32, 64, 3, padding=1),
+            nn.MaxPool2d((2, 2), stride=(2, 2)),
+            nn.ReLU(),
+            nn.BatchNorm2d(32)
         )
 
         self.fc1 = nn.Linear(64 * 7 * 7, 128)
