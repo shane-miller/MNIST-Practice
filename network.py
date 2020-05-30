@@ -90,23 +90,14 @@ class Net(nn.Module):
 
         self.conv1 = nn.Sequential(
             nn.Conv2d(1, 16, 3, padding=1),
-            nn.MaxPool2d((2, 2), stride=(2, 2)),
             nn.ReLU(),
-            nn.Dropout(p=0.3),
+            nn.Dropout(p=0.4),
             nn.BatchNorm2d(16)
         )
 
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(16, 32, 3, padding=1),
-            nn.ReLU(),
-            nn.Dropout(p=0.4),
-            nn.BatchNorm2d(32)
-        )
-
         self.fcDropout = nn.Dropout(p=0.5)
-        self.fc1 = nn.Linear(32 * 14 * 14, 64)
-        self.fc2 = nn.Linear(64, 32)
-        self.fc3 = nn.Linear(32, 10)
+        self.fc1 = nn.Linear(16 * 28 * 28, 32)
+        self.fc2 = nn.Linear(32, 10)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -116,8 +107,7 @@ class Net(nn.Module):
 
         x = F.relu(self.fc1(x))
         x = self.fcDropout(x)
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = F.softmax(self.fc2(x))
 
         return x
 
