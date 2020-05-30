@@ -90,14 +90,14 @@ class Net(nn.Module):
 
         self.conv1 = nn.Sequential(
             nn.Conv2d(1, 32, 3, stride=1),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=2)
+            nn.MaxPool2d((2, 2), stride=2),
+            nn.ReLU()
         )
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(32, 64, 3, stride=1),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=2)
+            nn.MaxPool2d((2, 2), stride=2),
+            nn.ReLU()
         )
 
         self.fc1 = nn.Linear(64 * 7 * 7, 128)
