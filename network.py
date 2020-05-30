@@ -328,7 +328,6 @@ txt += "Weight Decay: " + str(weight_decay) + "\n"
 txt += "Batch Size: " + str(batch_size) + "\n"
 txt += "Seed: " + str(seed) + "\n"
 txt += "Use Seed: " + str(use_seed) + "\n"
-txt += "Normalize: " + str(normalize) + "\n"
 txt += "LR Decay: " + str(lr_decay) + "\n"
 txt += "LR Step Size: " + str(lr_step_size) + "\n"
 
