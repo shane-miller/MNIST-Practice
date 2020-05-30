@@ -42,8 +42,6 @@ parser.add_argument('--weight_decay', type=float, default=0.05,
                     help='Weight decay for network')
 parser.add_argument('--name', type=str, default="results",
                     help='Name to name all the exported files of the network')
-parser.add_argument('--normalize', type=bool, default=False,
-                    help='Whether to use normalized data')
 parser.add_argument('--lr_decay', type=float, default=1.0,
                     help='LR decay')
 parser.add_argument('--lr_step_size', type=float, default=10,
@@ -54,7 +52,6 @@ args = parser.parse_args()
 weight_decay = args.weight_decay
 lr_step_size = args.lr_step_size
 batch_size = args.batch_size
-normalize = args.normalize
 use_seed = args.use_seed
 momentum = args.momentum
 lr_decay = args.lr_decay
