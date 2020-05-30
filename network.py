@@ -106,7 +106,7 @@ class Net(nn.Module):
         self.fcDropout = nn.Dropout(p=0.5)
         self.fc1 = nn.Linear(32 * 14 * 14, 64)
         self.fc2 = nn.Linear(64, 32)
-        self.fc3 = nn.Linear(18, 10)
+        self.fc3 = nn.Linear(32, 10)
 
     def forward(self, x):
         x = self.conv1(x)
