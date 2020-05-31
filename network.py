@@ -28,7 +28,7 @@ from PIL import Image
 parser = argparse.ArgumentParser(description='NMIST-Practice')
 parser.add_argument('--epochs', type=int, default=20,
                     help='Number of epochs')
-parser.add_argument('--batch_size', type=int, default=100,
+parser.add_argument('--batch_size', type=int, default=500,
                     help='Batch Size')
 parser.add_argument('--use_seed', type=bool, default=False,
                     help='Whether to use seed for randomization')
@@ -36,9 +36,9 @@ parser.add_argument('--seed', type=int, default=0,
                     help='Seed for initialization of random_dataset_split, weight inits')
 parser.add_argument('--lr', type=float, default=0.01,
                     help='Initial learning rate')
-parser.add_argument('--momentum', type=float, default=0.4,
+parser.add_argument('--momentum', type=float, default=0.5,
                     help='Momentum for network')
-parser.add_argument('--weight_decay', type=float, default=0.05,
+parser.add_argument('--weight_decay', type=float, default=0,
                     help='Weight decay for network')
 parser.add_argument('--name', type=str, default="results",
                     help='Name to name all the exported files of the network')
@@ -80,7 +80,7 @@ test_num = len(testset)
 
 ##### Load Datasets #####
 train_loader = data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
-test_loader = data.DataLoader(testset, batch_size=50, shuffle=True)
+test_loader = data.DataLoader(testset, batch_size=1000, shuffle=True)
 
 
 ##### Neural Network Definition #####
@@ -92,14 +92,14 @@ class Net(nn.Module):
             nn.Conv2d(1, 32, 3, padding=1),
             nn.MaxPool2d((2, 2), stride=(2, 2)),
             nn.ReLU(),
-            nn.BatchNorm2d(32)
+            #nn.BatchNorm2d(32)
         )
 
         self.conv2 = nn.Sequential(
             nn.Conv2d(32, 64, 3, padding=1),
             nn.MaxPool2d((2, 2), stride=(2, 2)),
             nn.ReLU(),
-            nn.BatchNorm2d(64)
+            #nn.BatchNorm2d(64)
         )
 
         self.fc1 = nn.Linear(64 * 7 * 7, 128)
