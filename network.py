@@ -257,7 +257,7 @@ plt.ylabel('Loss')
 plt.xlabel('Number of Iterations')
 plt.title("Learning rate =" + str(lr))
 # plt.show()
-plt.savefig(name + 'results/Losses.png')
+plt.savefig('results/' + name + 'Losses.png')
 
 # Test Accuracy Plot
 
@@ -268,7 +268,7 @@ plt.ylabel('Accuracy')
 plt.xlabel('Number of Iterations')
 plt.title("Test Accuracy")
 # plt.show()
-plt.savefig(name + 'results/Accuracy.png')
+plt.savefig('results/' + name + 'Accuracy.png')
 
 
 print(confusion_matrix)
@@ -299,7 +299,7 @@ plt.figure(figsize=(10, 10))
 plt.xlabel("Predicted Number")
 plt.ylabel("Ground Truth Number")
 sn.heatmap(df_cm, annot=True, cmap='YlGnBu')
-plt.savefig(name + 'results/ConfusionMatrix.png')
+plt.savefig("results/" + name + "ConfusionMatrix.png")
 
 # Saves Results text file
 
