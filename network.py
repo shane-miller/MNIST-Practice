@@ -247,7 +247,7 @@ print("Saving weight model to : " +
       name + ".pth")
 
 # Save Weights
-torch.save(net.state_dict(), name + ".pth")
+torch.save(net.state_dict(), "results/" + name + ".pth")
 
 # Losses Plot
 plt.figure()
@@ -257,7 +257,7 @@ plt.ylabel('Loss')
 plt.xlabel('Number of Iterations')
 plt.title("Learning rate =" + str(lr))
 # plt.show()
-plt.savefig(name + 'Losses.png')
+plt.savefig(name + 'results/Losses.png')
 
 # Test Accuracy Plot
 
@@ -268,7 +268,7 @@ plt.ylabel('Accuracy')
 plt.xlabel('Number of Iterations')
 plt.title("Test Accuracy")
 # plt.show()
-plt.savefig(name + 'Accuracy.png')
+plt.savefig(name + 'results/Accuracy.png')
 
 
 print(confusion_matrix)
@@ -299,7 +299,7 @@ plt.figure(figsize=(10, 10))
 plt.xlabel("Predicted Number")
 plt.ylabel("Ground Truth Number")
 sn.heatmap(df_cm, annot=True, cmap='YlGnBu')
-plt.savefig(name + 'ConfusionMatrix.png')
+plt.savefig(name + 'results/ConfusionMatrix.png')
 
 # Saves Results text file
 
@@ -314,5 +314,5 @@ txt += "Use Seed: " + str(use_seed) + "\n"
 txt += "LR Decay: " + str(lr_decay) + "\n"
 txt += "LR Step Size: " + str(lr_step_size) + "\n"
 
-with open(name + ".txt", "w") as file:
+with open("results/" + name + ".txt", "w") as file:
     file.write(txt)
