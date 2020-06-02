@@ -72,15 +72,16 @@ if use_seed:
 
 
 ##### Download MNIST Dataset #####
-trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transforms.ToTensor())
-testset = datasets.MNIST(root='./data', train=False, download=True, transform=transforms.ToTensor())
+transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,)),])
+trainset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+testset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
 test_num = len(testset)
 
 
 ##### Load Datasets #####
 train_loader = data.DataLoader(trainset, batch_size=batch_size, shuffle=True)
-test_loader = data.DataLoader(testset, batch_size=1000, shuffle=True)
+test_loader = data.DataLoader(testset, batch_size=200, shuffle=True)
 
 
 ##### Neural Network Definition #####
@@ -92,30 +93,46 @@ class Net(nn.Module):
             nn.Conv2d(1, 32, 3, padding=1),
             nn.MaxPool2d((2, 2), stride=(2, 2)),
             nn.ReLU(),
-            #nn.BatchNorm2d(32)
+            nn.Dropout(p=0.3),
+            nn.BatchNorm2d(32)
         )
 
         self.conv2 = nn.Sequential(
-            nn.Conv2d(32, 64, 3, padding=1),
-            nn.MaxPool2d((2, 2), stride=(2, 2)),
+            nn.Conv2d(32, 256, 5, padding=2),
             nn.ReLU(),
-            #nn.BatchNorm2d(64)
+            nn.Dropout(p=0.3),
+            nn.BatchNorm2d(256)
         )
 
-        self.fc1 = nn.Linear(64 * 7 * 7, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.conv3 = nn.Sequential(
+            nn.Conv2d(256, 512, 3, padding=1),
+            nn.MaxPool2d((2, 2), stride=(2, 2)),
+            nn.ReLU(),
+            nn.Dropout(p=0.3),
+            nn.BatchNorm2d(512)
+        )
+
+        self.fcDropout = nn.Dropout(p=0.5)
+        self.fc1 = nn.Linear(512 * 7 * 7, 1024)
+        self.fc2 = nn.Linear(1024, 256)
+        self.fc3 = nn.Linear(256, 64)
+        self.fc4 = nn.Linear(64, 10)
 
     def forward(self, x):
         x = self.conv1(x)
         x = self.conv2(x)
+        x = self.conv3(x)
 
         x = x.view(x.size(0), -1)
 
         x = F.relu(self.fc1(x))
-        x = F.log_softmax(self.fc2(x), dim=1)
+        x = self.fcDropout(x)
+        x = F.relu(self.fc2(x))
+        x = self.fcDropout(x)
+        x = F.relu(self.fc3(x))
+        x = F.log_softmax(self.fc4(x), dim=1)
 
         return x
-
 
 ##### Initialize Network #####
 net = Net()
@@ -200,8 +217,9 @@ for epoch in range(epochs):  # loop over the dataset multiple times
     test_losses.append(test_avg_loss)
     test_accuracies.append(epoch_correct / test_num)
 
-    print("Epoch:", epoch, "| Avg Loss:", avg_loss,
-          "\n         | Test Avg Loss:", test_avg_loss)
+    print("Epoch:", epoch, "\t| Train Avg Loss:", avg_loss,
+          "\n        \t| Test Avg Loss:", test_avg_loss,
+          "\n        \t| Test Accuracy:", (epoch_correct / test_num), "\n")
 
     if cuda.is_available():
         cuda.empty_cache()
@@ -215,7 +233,7 @@ net.eval()
 correct = 0
 confusion_matrix = np.zeros((10, 10))
 
-for i, (inputs, lebels) in enumerate(test_loader):
+for i, (inputs, labels) in enumerate(test_loader):
     if cuda.is_available():
         cuda.empty_cache()
 
@@ -243,8 +261,7 @@ for i, (inputs, lebels) in enumerate(test_loader):
 print("Test Accuracy =", (correct / test_num))
 print("Time taken =", (time.time() - t0))
 
-print("Saving weight model to : " +
-      name + ".pth")
+#print("Saving weight model to : " + name + ".pth")
 
 # Save Weights
 torch.save(net.state_dict(), "results/" + name + ".pth")
@@ -271,7 +288,7 @@ plt.title("Test Accuracy")
 plt.savefig('results/' + name + 'Accuracy.png')
 
 
-print(confusion_matrix)
+#print(confusion_matrix)
 
 # Confusion Matrix
 df_cm = pd.DataFrame(confusion_matrix, 
