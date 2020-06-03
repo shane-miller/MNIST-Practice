@@ -1,0 +1,10 @@
+Test Accuracy: 0.997
+Epochs: 114
+LR: 0.4
+Momentum: 0.4
+Weight Decay: 0.00025
+Batch Size: 500
+Seed: 0
+Use Seed: False
+LR Decay: 0.85
+LR Step Size: 10.0

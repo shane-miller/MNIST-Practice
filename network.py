@@ -60,7 +60,6 @@ seed = args.seed
 name = args.name
 lr = args.lr
 
-
 ##### Confirm Cuda Is Available #####
 print("Cuda Available:", cuda.is_available(), '\n')
 
@@ -98,23 +97,23 @@ class Net(nn.Module):
         )
 
         self.conv2 = nn.Sequential(
-            nn.Conv2d(32, 256, 5, padding=2),
+            nn.Conv2d(32, 128, 5, padding=2),
             nn.ReLU(),
-            nn.Dropout(p=0.3),
-            nn.BatchNorm2d(256)
+            nn.Dropout(p=0.4),
+            nn.BatchNorm2d(128)
         )
 
         self.conv3 = nn.Sequential(
-            nn.Conv2d(256, 512, 3, padding=1),
+            nn.Conv2d(128, 256, 3, padding=1),
             nn.MaxPool2d((2, 2), stride=(2, 2)),
             nn.ReLU(),
-            nn.Dropout(p=0.3),
-            nn.BatchNorm2d(512)
+            nn.Dropout(p=0.5),
+            nn.BatchNorm2d(256)
         )
 
         self.fcDropout = nn.Dropout(p=0.5)
-        self.fc1 = nn.Linear(512 * 7 * 7, 1024)
-        self.fc2 = nn.Linear(1024, 256)
+        self.fc1 = nn.Linear(256 * 7 * 7, 512)
+        self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, 64)
         self.fc4 = nn.Linear(64, 10)
 
@@ -225,7 +224,6 @@ for epoch in range(epochs):  # loop over the dataset multiple times
         cuda.empty_cache()
 
     scheduler.step()
-
 
 ##### Test Data Evaluation #####
 net.eval()
