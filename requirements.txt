@@ -5,4 +5,4 @@ torch==1.5.0
 torchvision==0.6.0
 numpy==1.18.1
 tqdm==4.45.0
-Pillow==7.1.2
+Pillow==8.1.1
